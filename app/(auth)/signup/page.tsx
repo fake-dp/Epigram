@@ -2,16 +2,39 @@
 
 import React from "react";
 import AuthForm from "@/components/AuthForm";
+import { signUp } from "@/lib/apis/auth";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/authStore";
 
-export default function LoginPage() {
-  const handleSignup = (data: { email: string; password: string; nickname?: string }) => {
-    console.log("회원가입 데이터:", data);
-    // 회원가입 API 호출 로직 추가
+export default function SignUpPage() {
+  const router = useRouter();
+  const setAuth = useAuthStore((state) => state.login);
+
+  const handleSignup = async (data: {
+    email: string;
+    password: string;
+    passwordConfirmation: string;
+    nickname: string;
+  }) => {
+    try {
+      const response = await signUp(data);
+      console.log("회원가입 성공:", response);
+
+      const { accessToken, refreshToken, user } = response;
+      setAuth(accessToken, refreshToken, user);
+
+      localStorage.setItem("access_token", accessToken);
+      localStorage.setItem("refresh_token", refreshToken);
+
+      alert("회원가입에 성공했습니다!");
+      router.push("/");
+    } catch (error) {
+      console.error("회원가입 실패:", error);
+      alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
       <AuthForm type="signup" onSubmit={handleSignup} />
-    </div>
   );
 }

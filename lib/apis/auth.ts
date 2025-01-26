@@ -1,25 +1,13 @@
-import { axiosInstance } from '@/lib/instance/axios';
+import { axiosInstance } from "@/lib/instance/axios";
+import { LoginRequest, LoginResponse, SignUpRequest, SignUpResponse} from "../instance/types";
 
-interface LoginResponse {
-    accessToken: string;
-    refreshToken: string;
-  }
-  
-  interface LoginRequest {
-    email: string;
-    password: string;
-  }
-  
-  export const login = async ({ email, password }: LoginRequest): Promise<LoginResponse> => {
-    try {
-      const response = await axiosInstance.post<LoginResponse>("/auth/signIn", {
-        email,
-        password,
-      });
-      console.log("로그인 성공:", response.data);
-      return response.data;
-    } catch (error) {
-      console.error("로그인 실패:", error);
-      throw error;
-    }
-  };
+// 로그인
+export const login = async (data: LoginRequest): Promise<LoginResponse> => {
+  const response = await axiosInstance.post<LoginResponse>("/auth/signIn", data);
+  return response.data;
+};
+
+export const signUp = async (data: SignUpRequest): Promise<SignUpResponse> => {
+  const response = await axiosInstance.post<SignUpResponse>("/auth/signUp", data);
+  return response.data;
+};
