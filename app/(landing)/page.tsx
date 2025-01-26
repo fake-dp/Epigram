@@ -116,7 +116,7 @@ text-decoration-skip-ink: none;
 color: #6A82A9;
 `;
 
-export default function LandingPage() {
+export default function Home() {
   return (
     <Container>
     {/* 렌딩 메인 인트로 */}
