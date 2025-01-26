@@ -1,11 +1,11 @@
 interface EpigramDetailPageProps {
-    params: {
+    params: Promise<{
       id: string;
-    };
+    }>;
   }
   
-  export default function EpigramDetailPage({ params }: EpigramDetailPageProps) {
-    const { id } = params;
+  export default async function EpigramDetailPage({ params }: EpigramDetailPageProps) {
+    const { id } = await params;
   
     return (
       <div>

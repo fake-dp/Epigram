@@ -8,7 +8,7 @@ interface ApiParam {
 
 export const get = async (param: ApiParam) => {
   const { url = '', headers = {} } = param;
-  let result = await axiosInstance.get(url, { headers });
+  const result = await axiosInstance.get(url, { headers });
   return result;
 };
 
