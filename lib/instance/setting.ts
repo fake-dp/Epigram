@@ -1,4 +1,4 @@
-import { axiosInstance , axiosMultipartInstance} from './axios';
+import { axiosInstance } from './axios';
 
 interface ApiParam {
     url: string;
@@ -18,17 +18,6 @@ export const post = async (param: ApiParam) => {
   return result;
 };
 
-export const mpost = async (param: ApiParam) => {
-  const { url = '', data = {} } = param;
-  const result = await axiosMultipartInstance.post(url, data);
-  return result;
-};
-
-export const mpatch = async (param: ApiParam) => {
-  const { url = '', data = {} } = param;
-  const result = await axiosMultipartInstance.patch(url, data);
-  return result;
-};
 
 export const put = async (param: ApiParam) => {
     const { url = '', data = {}, headers = {} } = param;
@@ -51,9 +40,7 @@ export const del = async (param: ApiParam) => {
 export const api = {
   get,
   post,
-  mpost,
   patch,
   del,
   put,
-  mpatch
 };

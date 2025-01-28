@@ -43,3 +43,54 @@ export interface SignUpResponse {
   };
 }
 
+// epigrams 관련 타입
+export interface EpigramTag {
+  name: string;
+  id: number;
+}
+
+export interface EpigramListResponse {
+  totalCount: number;
+  nextCursor: number;
+  list: {
+    likeCount: number;
+    tags: EpigramTag[];
+    writerId: number;
+    referenceUrl: string;
+    referenceTitle: string;
+    author: string;
+    content: string;
+    id: number;
+  }[];
+}
+
+export interface EpigramCreateRequest {
+  tags: string[];
+  referenceUrl: string;
+  referenceTitle: string;
+  author: string;
+  content: string;
+}
+
+export interface EpigramCreateResponse {
+  likeCount: number;
+  tags: EpigramTag[];
+  writerId: number;
+  referenceUrl: string;
+  referenceTitle: string;
+  author: string;
+  content: string;
+  id: number;
+}
+
+export interface EpigramDetailResponse {
+  likeCount: number;
+  tags: EpigramTag[];
+  writerId: number;
+  referenceUrl: string;
+  referenceTitle: string;
+  author: string;
+  content: string;
+  id: number;
+  isLiked: boolean;
+}

@@ -77,6 +77,11 @@ export default function Header() {
   const { isLoggedIn, user, logout } = useAuthStore();
   console.log('user',user)
 
+  const handleLogout = () => {
+    logout();
+    router.push("/");
+  };
+
   return (
     <HeaderContainer>
         <HeaderLeftContainer>
@@ -91,7 +96,7 @@ export default function Header() {
        {isLoggedIn && <LeftTextBtn onClick={() => router.push("/epigramlist")}>피드</LeftTextBtn>}
         </HeaderLeftContainer>
       {isLoggedIn ? (
-        <HeaderRigthContainer onClick={logout}>
+        <HeaderRigthContainer onClick={handleLogout}>
         <Image
           src="/images/user.png"
           alt="유저"
