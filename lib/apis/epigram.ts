@@ -1,5 +1,5 @@
 import { axiosInstance } from "@/lib/instance/axios";
-import { EpigramCreateRequest, EpigramCreateResponse, EpigramDetailResponse} from "../instance/types";
+import { EpigramCreateRequest, EpigramCreateResponse, EpigramDetailResponse, EpigramUpdateRequest, EpigramUpdateResponse} from "../instance/types";
 
 
 // 리스트 받아오기
@@ -29,3 +29,15 @@ export const getEpigramList = async (limit: number, cursor?: number) => {
     return response.data;
   };
   
+
+  // 에피그램 수정
+export const updateEpigram = async (
+    id: number,
+    data: EpigramUpdateRequest
+  ): Promise<EpigramUpdateResponse> => {
+    const response = await axiosInstance.patch<EpigramUpdateResponse>(
+      `/epigrams/${id}`,
+      data
+    );
+    return response.data;
+  };

@@ -94,3 +94,22 @@ export interface EpigramDetailResponse {
   id: number;
   isLiked: boolean;
 }
+
+export interface EpigramUpdateRequest {
+  tags: string[];
+  referenceUrl: string;
+  referenceTitle: string;
+  author: string;
+  content: string;
+}
+
+export interface EpigramUpdateResponse {
+  likeCount: number;
+  tags: { name: string; id: number }[];
+  writerId: number;
+  referenceUrl: string;
+  referenceTitle: string;
+  author: string;
+  content: string;
+  id: number;
+}

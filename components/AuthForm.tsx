@@ -11,6 +11,7 @@ const Container = styled.div`
   align-items: center;
   min-height: 100vh;
   width: 100%;
+  padding: 100px 10px 100px 10px;
 `;
 
 const InnerFormBox =styled.div`

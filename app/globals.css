@@ -27,6 +27,13 @@
   src: url('../public/fonts/Pretendard-Bold.ttf') format('truetype');
 }
 
+@font-face {
+  /* font-weight : 700 */
+  font-family: 'IropkeBatangM';
+  src: url('../public/fonts/IropkeBatangM.woff') format('truetype');
+}
+
+
 
 body {
   outline: none;

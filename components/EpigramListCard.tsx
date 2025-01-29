@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
@@ -60,7 +62,7 @@ const TextContainer = styled.div`
 `;
 
 const MainText = styled.h3`
-font-family: Iropke Batang OTF;
+font-family: IropkeBatangM;
 font-size: 20px;
 font-weight: 400;
 line-height: 40px;
@@ -71,7 +73,7 @@ color:#373737;
 `;
 
 const SubText = styled.p`
-font-family: Iropke Batang OTF;
+font-family: IropkeBatangM;
 font-size: 18px;
 font-weight: 400;
 line-height: 40px;
