@@ -1,18 +1,25 @@
-import axios from "axios";
+import axios from 'axios';
+import { useAuthStore } from '@/store/authStore';
 
-// 기본 axios 인스턴스
+console.log(process.env.NEXT_PUBLIC_API_BASE_URL, 'url');
+
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 });
 
 axiosInstance.interceptors.request.use((config) => {
-  const accessToken = localStorage.getItem("access_token");
+  const { accessToken } = useAuthStore.getState();
+
+  console.log('현재 사용 중인 accessToken:', accessToken);
+  console.log('요청 URL:', config.url);
+
   if (accessToken && config.headers) {
-    config.headers["Authorization"] = `Bearer ${accessToken}`;
+    config.headers['Authorization'] = `Bearer ${accessToken}`;
   }
+
   return config;
 });
 
@@ -24,10 +31,10 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
-      const refreshToken = localStorage.getItem("refresh_token");
+      const refreshToken = localStorage.getItem('refresh_token');
 
       if (!refreshToken) {
-        console.error("No refresh token available. Logging out...");
+        console.error('No refresh token available. Logging out...');
         return Promise.reject(error);
       }
 
@@ -37,15 +44,18 @@ axiosInstance.interceptors.response.use(
           { refreshToken },
           {
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
-          }
+          },
         );
 
         const newAccessToken = data.accessToken;
-        localStorage.setItem("access_token", newAccessToken);
+        localStorage.setItem('access_token', newAccessToken);
+        useAuthStore.setState({ accessToken: newAccessToken });
 
-        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+        axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+
+        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
         return axiosInstance(originalRequest);
       } catch (refreshError) {
         return Promise.reject(refreshError);
@@ -53,5 +63,5 @@ axiosInstance.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );

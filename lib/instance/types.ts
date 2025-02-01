@@ -20,7 +20,6 @@ export interface LoginRequest {
   password: string;
 }
 
-
 // 회원가입 관련 타입
 export interface SignUpRequest {
   email: string;
@@ -112,4 +111,28 @@ export interface EpigramUpdateResponse {
   author: string;
   content: string;
   id: number;
+}
+
+export interface EpigramDeleteResponse {
+  id: number;
+}
+
+export interface CommentRequest {
+  epigramId: number;
+  isPrivate: boolean;
+  content: string;
+}
+
+export interface CommentResponse {
+  id: number;
+  content: string;
+  isPrivate: boolean;
+  createdAt: string;
+  updatedAt: string;
+  writer: {
+    id: number;
+    nickname: string;
+    image: string | null;
+  };
+  epigramId: number;
 }

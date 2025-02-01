@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 interface User {
   id: number;
@@ -47,13 +47,13 @@ export const useAuthStore = create<AuthState>()(
         }),
     }),
     {
-      name: "auth-storage", // 로컬 스토리지 키 이름
+      name: 'auth-storage',
       partialize: (state) => ({
         isLoggedIn: state.isLoggedIn,
         accessToken: state.accessToken,
         refreshToken: state.refreshToken,
         user: state.user,
       }),
-    }
-  )
+    },
+  ),
 );

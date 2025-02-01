@@ -1,10 +1,7 @@
-"use client";
+'use client';
 
-// import EditEpigramPage from "@/components/EditEpigram";
+import EditEpigramPage from '@/components/EditEpigram';
 
-// export default function EditPage({ params }: { params: { id: string } }) {
-//   return <EditEpigramPage params={params} />;
-// }
-export default function EditPage() {
-    return null;
-  }
+export default function EditPage({ params }: { params: Promise<{ id: string }> }) {
+  return <EditEpigramPage params={params} />;
+}
