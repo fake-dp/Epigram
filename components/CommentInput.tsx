@@ -17,18 +17,16 @@ export default function CommentInput({ epigramId }: CommentInputProps) {
   const [comment, setComment] = useState('');
   //   const [isPrivate, setIsPrivate] = useState(false);
   const isPrivate = false;
-  const { fetchComments } = useCommentStore();
-
-  console.log('user123', user);
+  const { addComment } = useCommentStore();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!comment.trim()) return;
 
     try {
-      await createEpigramComment({ epigramId, content: comment, isPrivate });
+      const newComment = await createEpigramComment({ epigramId, content: comment, isPrivate });
       setComment('');
-      fetchComments(epigramId, 10);
+      addComment(epigramId, newComment);
     } catch (error) {
       console.error('댓글 등록 실패:', error);
     }

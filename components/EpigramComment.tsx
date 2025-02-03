@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useCallback, useState } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 import CommentInput from '@/components/CommentInput';
@@ -23,16 +23,42 @@ interface Comment {
   epigramId: number;
 }
 
-export default function EpigramComment({
-  comments,
-  epigramId,
-}: {
-  comments: Comment[];
-  epigramId: number;
-}) {
-  const { deleteComment, editCommentId, setEditCommentId, updateComment } = useCommentStore();
+export default function EpigramComment({ epigramId }: { epigramId: number }) {
+  const {
+    comments,
+    fetchComments,
+    deleteComment,
+    editCommentId,
+    setEditCommentId,
+    updateComment,
+    hasMore,
+    isLoading,
+    totalCount,
+  } = useCommentStore();
   const { user } = useAuthStore();
   const [editedContent, setEditedContent] = useState('');
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
+  useEffect(() => {
+    fetchComments(epigramId, 10);
+  }, [epigramId, fetchComments]);
+
+  const lastCommentRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (isLoading || !hasMore) return;
+
+      if (observerRef.current) observerRef.current.disconnect();
+
+      observerRef.current = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) {
+          fetchComments(epigramId, 10);
+        }
+      });
+
+      if (node) observerRef.current.observe(node);
+    },
+    [isLoading, hasMore, fetchComments, epigramId],
+  );
 
   const handleEditClick = (comment: Comment) => {
     setEditCommentId(comment.id);
@@ -42,7 +68,7 @@ export default function EpigramComment({
   const handleUpdate = async (commentId: number) => {
     try {
       await updateEpigramComment(commentId, editedContent, true);
-      updateComment(commentId, editedContent);
+      updateComment(epigramId, commentId, editedContent);
       setEditCommentId(null);
     } catch (error) {
       console.error('댓글 수정 실패:', error);
@@ -53,7 +79,7 @@ export default function EpigramComment({
     if (confirm('정말 삭제하시겠습니까?')) {
       try {
         await deleteEpigramComment(commentId);
-        deleteComment(commentId);
+        deleteComment(epigramId, commentId);
       } catch (error) {
         console.error('댓글 삭제 실패:', error);
       }
@@ -63,12 +89,15 @@ export default function EpigramComment({
   return (
     <Container>
       <CommentCountBox>
-        <CountText>댓글 ({comments.length})</CountText>
+        <CountText>댓글 ({totalCount[epigramId]})</CountText>
       </CommentCountBox>
       <CommentInput epigramId={epigramId} />
       <CommentList>
-        {comments.map((comment) => (
-          <CommentItem key={comment.id}>
+        {comments[epigramId]?.map((comment, index) => (
+          <CommentItem
+            key={comment.id}
+            ref={index === comments[epigramId].length - 1 ? lastCommentRef : null}
+          >
             {editCommentId === comment.id ? (
               <EditContainer>
                 <EditInput

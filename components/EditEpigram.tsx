@@ -50,14 +50,14 @@ export default function EditEpigramPage({ params }: { params: Promise<{ id: stri
     const tagsArray = formData.tags.split(',').map((tag) => tag.trim());
 
     try {
-      const response = await updateEpigram(epigramId, {
+      await updateEpigram(epigramId, {
         tags: tagsArray,
         referenceUrl: formData.referenceUrl,
         referenceTitle: formData.referenceTitle,
         author: formData.author,
         content: formData.content,
       });
-      console.log('수정 성공:', response);
+
       setMessage('에피그램이 성공적으로 수정되었습니다!');
       router.push('/epigramlist');
     } catch (error) {

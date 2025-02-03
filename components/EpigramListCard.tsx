@@ -26,7 +26,7 @@ export default function EpigramListCard({
   content,
 }: EpigramCardProps) {
   const router = useRouter();
-  console.log('udid', id);
+
   const handleClick = () => {
     router.push(`/epigrams/${id}`);
   };

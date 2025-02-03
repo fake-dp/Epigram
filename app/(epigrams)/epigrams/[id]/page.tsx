@@ -3,7 +3,7 @@
 import React, { useEffect, useState, use } from 'react';
 import styled from 'styled-components';
 import { useEpigramStore } from '@/store/epigramStore';
-import { useCommentStore } from '@/store/commentStore';
+
 import { getEpigramDetail } from '@/lib/apis/epigram';
 import EpigramDetailInfo from '@/components/EpigramDetailInfo';
 import EpigramComment from '@/components/EpigramComment';
@@ -11,7 +11,7 @@ import EpigramComment from '@/components/EpigramComment';
 export default function EpigramDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { epigramDetail, setEpigramDetail } = useEpigramStore();
   const [loading, setLoading] = useState<boolean>(true);
-  const { comments, fetchComments } = useCommentStore();
+
   const { id } = use(params);
 
   useEffect(() => {
@@ -20,7 +20,6 @@ export default function EpigramDetailPage({ params }: { params: Promise<{ id: st
         setLoading(true);
         const response = await getEpigramDetail(parseInt(id, 10));
         setEpigramDetail(response);
-        await fetchComments(parseInt(id, 10), 10);
       } catch (error) {
         console.error('에피그램 상세 정보를 불러오지 못했습니다:', error);
       }
@@ -28,7 +27,7 @@ export default function EpigramDetailPage({ params }: { params: Promise<{ id: st
     };
 
     fetchData();
-  }, [id, setEpigramDetail, fetchComments]);
+  }, [id, setEpigramDetail]);
 
   if (loading) {
     return <p>로딩 중...</p>;
@@ -45,7 +44,7 @@ export default function EpigramDetailPage({ params }: { params: Promise<{ id: st
   return (
     <Container>
       <EpigramDetailInfo epigram={epigramDetail} />
-      <EpigramComment comments={comments} epigramId={parseInt(id, 10)} />
+      <EpigramComment epigramId={parseInt(id, 10)} />
     </Container>
   );
 }

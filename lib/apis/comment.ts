@@ -15,7 +15,6 @@ export const getEpigramComments = async (epigramId: number, limit: number, curso
 // 댓글 등록하기
 export const createEpigramComment = async (data: CommentRequest): Promise<CommentResponse> => {
   const response = await axiosInstance.post<CommentResponse>('/comments', data);
-  console.log('댓글 등록 API 응답:', response.data);
   return response.data;
 };
 

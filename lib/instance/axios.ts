@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { useAuthStore } from '@/store/authStore';
 
-console.log(process.env.NEXT_PUBLIC_API_BASE_URL, 'url');
-
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   headers: {
@@ -12,9 +10,6 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use((config) => {
   const { accessToken } = useAuthStore.getState();
-
-  console.log('현재 사용 중인 accessToken:', accessToken);
-  console.log('요청 URL:', config.url);
 
   if (accessToken && config.headers) {
     config.headers['Authorization'] = `Bearer ${accessToken}`;
